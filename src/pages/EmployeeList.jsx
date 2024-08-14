@@ -176,9 +176,21 @@ function EmployeeList() {
                          font-semibold'>{emp.email}</p>
                       </div>
                     </TableCell>
-                    <TableCell>{emp.duration}</TableCell>
-                    <TableCell>{emp.age}</TableCell>
-                    <TableCell>${emp.salary}</TableCell>
+                    <TableCell>
+                      <p className="text-green-700">
+                        {emp.duration}
+                      </p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="text-pink-800">
+                        {emp.age}
+                      </p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="text-cyan-800">
+                        ${emp.salary}
+                      </p>
+                    </TableCell>
                     <TableCell>{emp.date}</TableCell>
                     <TableCell>{emp.category}</TableCell>
                     <TableCell>
