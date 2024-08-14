@@ -58,7 +58,7 @@ const CreateEmployee = () => {
           <label className="block text-gray-700 mb-2">Fullname</label>
           <input
             type="text"
-            className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
+            className="lg:w-[40rem] w-[20rem] px-3 py-2 border border-gray-300 rounded"
             value={fullname}
             onChange={(e) => setFullName(e.target.value)}
             required
@@ -68,7 +68,7 @@ const CreateEmployee = () => {
           <label className="block text-gray-700 mb-2">Email</label>
           <input
             type="text"
-            className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
+            className="lg:w-[40rem] w-[20rem] px-3 py-2 border border-gray-300 rounded"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -78,7 +78,7 @@ const CreateEmployee = () => {
           <label className="block text-gray-700 mb-2">Duration</label>
           <input
             type="text"
-            className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
+            className="lg:w-[40rem] w-[20rem] px-3 py-2 border border-gray-300 rounded"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
             required
@@ -88,7 +88,7 @@ const CreateEmployee = () => {
           <label className="block text-gray-700 mb-2">Age</label>
           <input
             type="number"
-            className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
+            className="lg:w-[40rem] w-[20rem] px-3 py-2 border border-gray-300 rounded"
             value={age}
             onChange={(e) => setAge(e.target.value)}
             required
@@ -98,7 +98,7 @@ const CreateEmployee = () => {
           <label className="block text-gray-700 mb-2">Salary</label>
           <input
             type="number"
-            className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
+            className="lg:w-[40rem] w-[20rem] px-3 py-2 border border-gray-300 rounded"
             value={salary}
             onChange={(e) => setSalary(e.target.value)}
             required
@@ -108,7 +108,7 @@ const CreateEmployee = () => {
           <label className="block text-gray-700 mb-2">Date</label>
           <input
             type="date"
-            className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
+            className="lg:w-[40rem] w-[20rem] px-3 py-2 border border-gray-300 rounded"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
@@ -118,7 +118,7 @@ const CreateEmployee = () => {
           <label className="block text-gray-700 mb-2">Category</label>
           <input
             type="text"
-            className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
+            className="lg:w-[40rem] w-[20rem] px-3 py-2 border border-gray-300 rounded"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
@@ -129,7 +129,7 @@ const CreateEmployee = () => {
           <input
             type="file"
             accept="image/*"
-            className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
+            className="lg:w-[40rem] w-[20rem] px-3 py-2 border border-gray-300 rounded"
             onChange={handleImageChange}
             required
           />

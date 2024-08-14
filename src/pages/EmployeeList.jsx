@@ -167,7 +167,7 @@ function EmployeeList() {
                   <StyledTableRow key={emp.id} >
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>
-                      <img src={emp.image} alt={emp.fullname} className="w-16 h-16 object-cover rounded-full" />
+                      <img src={emp.image} alt={emp.fullname} className="w-16 h-16 object-cover rounded lg:rounded-full" />
                     </TableCell>
                     <TableCell>
                       <div>
