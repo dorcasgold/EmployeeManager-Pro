@@ -6,6 +6,7 @@ import { firestore, storage } from '../firebase';
 
 const CreateEmployee = () => {
   const [fullname, setFullName] = useState('');
+  const [email, setEmail] = useState('');
   const [duration, setDuration] = useState('');
   const [age, setAge] = useState('');
   const [salary, setSalary] = useState('');
@@ -34,6 +35,7 @@ const CreateEmployee = () => {
       const employeesCollection = collection(firestore, 'employees');
       await addDoc(employeesCollection, {
         fullname,
+        email,
         age,
         salary,
         duration,
@@ -59,6 +61,16 @@ const CreateEmployee = () => {
             className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
             value={fullname}
             onChange={(e) => setFullName(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Email</label>
+          <input
+            type="text"
+            className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>

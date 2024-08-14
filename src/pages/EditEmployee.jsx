@@ -8,6 +8,7 @@ const EditEmployee = () => {
   const { id } = useParams();
   const [employee, setEmployee] = useState(null);
   const [fullname, setFullName] = useState('');
+  const [email, setEmail] = useState('');
   const [duration, setDuration] = useState('');
   const [age, setAge] = useState('');
   const [salary, setSalary] = useState('');
@@ -26,6 +27,7 @@ const EditEmployee = () => {
           const data = docSnap.data();
           setEmployee(data);
           setFullName(data.fullname);
+          setEmail(data.email);
           setDuration(data.duration);
           setAge(data.age);
           setSalary(data.salary);
@@ -66,6 +68,7 @@ const EditEmployee = () => {
       const docRef = doc(collection(firestore, 'employees'), id);
       await updateDoc(docRef, {
         fullname,
+        email,
         duration,
         age,
         salary,
@@ -91,6 +94,16 @@ const EditEmployee = () => {
               className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
               value={fullname}
               onChange={(e) => setFullName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Email</label>
+            <input
+              type="text"
+              className="w-[40rem] px-3 py-2 border border-gray-300 rounded"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>

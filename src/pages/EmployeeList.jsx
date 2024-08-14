@@ -11,8 +11,6 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-
-
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
   const navigate = useNavigate();
@@ -42,16 +40,29 @@ function EmployeeList() {
 
   const handleLogout = async () => {
     try {
-      await signOut(auth);
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Logout Successful",
-        showConfirmButton: false,
-        timer: 1500
+      // Show confirmation dialog
+      const result = await Swal.fire({
+        title: "Logging Out",
+        text: "Are you sure you want to log out?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes"
       });
-      navigate('/');
-    } catch (error) {
+
+      // Proceed if confirmed
+      if (result.isConfirmed) {
+        navigate('/');
+        // Show success notification
+        Swal.fire({
+          title: "Logout!",
+          text: 'Logout successfull',
+          icon: "success"
+        });
+      }
+    }
+    catch (error) {
       console.error('Error signing out: ', error.message);
     }
   };
@@ -114,7 +125,6 @@ function EmployeeList() {
     borderBottom: '1px solid #4bd15d',
   }));
 
-
   return (
     <div className='bg-gray-300 min-h-screen font-sans'>
       <nav className='flex flex-col lg:flex-row gap-5 justify-center lg:justify-between px-1 lg:px-10 bg-gray-100 py-5 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]'>
@@ -162,7 +172,8 @@ function EmployeeList() {
                     <TableCell>
                       <div>
                         <p className='text-xl font-semibold'>{emp.fullname}</p>
-                        <p className='text-green-500 font-semibold'>{emp.category}</p>
+                        <p className='text-slate-500
+                         font-semibold'>{emp.email}</p>
                       </div>
                     </TableCell>
                     <TableCell>{emp.duration}</TableCell>
