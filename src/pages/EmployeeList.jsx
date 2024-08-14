@@ -5,8 +5,15 @@ import { signOut } from 'firebase/auth';
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { firestore } from '../firebase';
 import { UserAuth } from '../context/AuthContext';
+import Swal from 'sweetalert2';
+import { CiEdit } from "react-icons/ci";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const EmployeeList = () => {
+
+
+function EmployeeList() {
   const [employees, setEmployees] = useState([]);
   const navigate = useNavigate();
   const { user } = UserAuth() || {};
@@ -29,9 +36,20 @@ const EmployeeList = () => {
     fetchEmployees();
   }, []);
 
+  if (!user) {
+    return <Navigate to='/' />;
+  }
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Logout Successful",
+        showConfirmButton: false,
+        timer: 1500
+      });
       navigate('/');
     } catch (error) {
       console.error('Error signing out: ', error.message);
@@ -40,62 +58,137 @@ const EmployeeList = () => {
 
   const handleDelete = async (id) => {
     try {
-      const employeeDoc = doc(firestore, 'employees', id);
-      await deleteDoc(employeeDoc);
-      setEmployees(employees.filter(emp => emp.id !== id));
+      // Show confirmation dialog
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      });
+
+      // Proceed if confirmed
+      if (result.isConfirmed) {
+        const employeeDoc = doc(firestore, 'employees', id);
+
+        // Delete the document from Firestore
+        await deleteDoc(employeeDoc);
+
+        // Update the local state to remove the deleted employee
+        setEmployees((prevEmployees) =>
+          prevEmployees.filter(emp => emp.id !== id)
+        );
+
+        // Show success notification
+        Swal.fire({
+          title: "Deleted!",
+          text: 'employee has been deleted.',
+          icon: "success"
+        });
+      }
     } catch (error) {
       console.error("Error deleting employee: ", error);
+      Swal.fire({
+        title: "Error!",
+        text: "There was an issue deleting the employee.",
+        icon: "error"
+      });
     }
   };
 
-  if (user) {
-    return (
-      <div className="p-6">
-        <h2 className="text-2xl font-bold mb-4">Employee List</h2>
-        <div className='flex gap-2'>
-          <Link to="/employees/create" className="bg-green-500 text-white py-2 px-4 rounded mb-4 inline-block">Create Employee</Link>
-          <button onClick={handleLogout} className="bg-red-500 text-white py-2 px-4 rounded mb-4 inline-block">Log Out</button>
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    backgroundColor: '#f2fff4',
+    '&:hover': {
+      // backgroundColor: '#e3e0d8',
+      boxShadow: '1px 7px 7px 8px #718096',
+      cursor: 'pointer'
+    },
+  }));
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    fontWeight: 'bold',
+    backgroundColor: '#f2fff4',
+    borderBottom: '1px solid #4bd15d',
+  }));
+
+
+  return (
+    <div className='bg-gray-300 min-h-screen font-sans'>
+      <nav className='flex flex-col lg:flex-row gap-5 justify-center lg:justify-between px-1 lg:px-10 bg-gray-100 py-5 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]'>
+        <p className='text-2xl lg:text-xl font-semibold text-orange-700 underline'>Employee Manager Pro</p>
+        <div className='flex gap-8'>
+          <Link to="/employees/create" className="bg-green-600 text-white py-2 px-3 rounded-lg font-medium inline-block">
+            Add Employee
+          </Link>
+          <button onClick={handleLogout} className="bg-red-600 text-white py-2 px-5 font-medium rounded-lg inline-block">
+            Log Out
+          </button>
         </div>
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead>
-            <tr>
-              <th className="border-b py-2 px-4">No</th>
-              <th className="border-b py-2 px-4">First Name</th>
-              <th className="border-b py-2 px-4">Last Name</th>
-              <th className="border-b py-2 px-4">Age</th>
-              <th className="border-b py-2 px-4">Salary</th>
-              <th className="border-b py-2 px-4">Date</th>
-              <th className="border-b py-2 px-4">Category</th>
-              <th className="border-b py-2 px-4">Image</th>
-              <th className="border-b py-2 px-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employees.map((emp, index) => (
-              <tr key={emp.id}>
-                <td className="border-b py-2 px-4">{index + 1}</td>
-                <td className="border-b py-2 px-4">{emp.firstName}</td>
-                <td className="border-b py-2 px-4">{emp.lastName}</td>
-                <td className="border-b py-2 px-4">{emp.age}</td>
-                <td className="border-b py-2 px-4">${emp.salary}</td>
-                <td className="border-b py-2 px-4">{emp.date}</td>
-                <td className="border-b py-2 px-4">{emp.category}</td>
-                <td className="border-b py-2 px-4">
-                  <img src={emp.image} alt={emp.firstName} className="w-16 h-16 object-cover" />
-                </td>
-                <td className="border-b py-2 px-4">
-                  <Link to={`/employees/edit/${emp.id}`} className="bg-yellow-500 text-white py-1 px-2 rounded mr-2">Edit</Link>
-                  <button onClick={() => handleDelete(emp.id)} className="bg-red-500 text-white py-1 px-2 rounded">Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      </nav>
+
+      <div className="overflow-x-auto p-4 ">
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>No</StyledTableCell>
+                <StyledTableCell>Image</StyledTableCell>
+                <StyledTableCell>Employee</StyledTableCell>
+                <StyledTableCell>Duration</StyledTableCell>
+                <StyledTableCell>Age</StyledTableCell>
+                <StyledTableCell>Salary</StyledTableCell>
+                <StyledTableCell>Date</StyledTableCell>
+                <StyledTableCell>Category</StyledTableCell>
+                <StyledTableCell>Actions</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {employees.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={8} align="center">
+                    Please Create an Employee To get started !!!
+                  </TableCell>
+                </TableRow>
+              ) : (
+                employees.map((emp, index) => (
+                  <StyledTableRow key={emp.id} >
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>
+                      <img src={emp.image} alt={emp.fullname} className="w-16 h-16 object-cover rounded-full" />
+                    </TableCell>
+                    <TableCell>
+                      <div>
+                        <p className='text-xl font-semibold'>{emp.fullname}</p>
+                        <p className='text-green-500 font-semibold'>{emp.category}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>{emp.duration}</TableCell>
+                    <TableCell>{emp.age}</TableCell>
+                    <TableCell>${emp.salary}</TableCell>
+                    <TableCell>{emp.date}</TableCell>
+                    <TableCell>{emp.category}</TableCell>
+                    <TableCell>
+                      <div className='flex gap-2'>
+                        <IconButton onClick={() => navigate(`/employees/edit/${emp.id}`)} color="primary">
+                          <CiEdit size={20} />
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(emp.id)} color="secondary">
+                          <FaRegTrashAlt size={20} />
+                        </IconButton>
+                      </div>
+                    </TableCell>
+                  </StyledTableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
-    );
-  } else {
-    return <Navigate to='/' />
-  }
-};
+    </div>
+  );
+}
 
 export default EmployeeList;
