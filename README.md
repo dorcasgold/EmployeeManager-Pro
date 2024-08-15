@@ -1,8 +1,15 @@
-# React + Vite
+# EmployeeManager-Pro - Employee Management CRUD App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+EmployeeManager-Pro is a comprehensive employee management application designed to handle CRUD operations. The application features secure authentication, a user-friendly interface, and functionalities for managing employee details effectively.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Authentication:** Sign up, log in, and log out functionalities.
+- **Employee Management:** Create, edit, and delete employee records.
+- **Employee Details:** Manage employee information including name, email, salary, date of joining, category, and image.
+- **Admin Panel:** Admin functionalities for viewing, editing, and deleting employees.
+
+## Technologies Used
+
+- **Frontend:** ReactJS, Tailwind CSS, MUI
+- **Backend:** Firebase (Authentication, Firestore, Storage)
